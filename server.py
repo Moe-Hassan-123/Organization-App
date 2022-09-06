@@ -5,6 +5,7 @@ The Backend Server for my Organization App.
 it has a list of api calls that allows
 the react app to interact with the database
 """
+#pylint: disable=broad-except
 
 import sqlite3
 from flask import(
@@ -12,7 +13,6 @@ from flask import(
             )
 import helpers.database as DB
 from helpers.project import Project
-import project
 
 app = Flask(__name__)
 
@@ -44,7 +44,6 @@ def add_project() -> dict:
         dict: Formatted as json, first value is a bool wheteher it worked or not.
                                  the second value is a message to be displayed. 
     """
-    #pylint: disable=broad-except
 
     # TODO get data from request.
     data = {}
