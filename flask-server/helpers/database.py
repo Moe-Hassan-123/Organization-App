@@ -140,15 +140,24 @@ def add_project(cur: sqlite3.Cursor, pro: Project):
             )
         )
 
-def delete_project(user_id: int, project_id: int):
+def delete_project(cur: sqlite3.Cursor, user_id: int, project_id: int):
     """Deletes the project from the database
 
     Args:
         user_id (int): The user id
         project_id (int): the project title and overview
-
-    Returns:
-        bool: indicates whether the insertion was successful or not.
     """
-    # TODO the function..
-    return user_id, project_id
+    cur.execute(
+        """
+        DELETE FROM projects
+        WHERE
+            projects_id = ?
+        AND
+            user_id = ?
+        """
+        ,
+        (
+            user_id,
+            project_id,
+        )
+    )
