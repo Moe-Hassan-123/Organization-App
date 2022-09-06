@@ -80,3 +80,16 @@ def add_project(user_id: int, overview: str, links: dict, todos: dict) -> bool:
     """
     # TODO
     ...
+    
+def delete_project(user_id: int, project_id: int):
+    """Deletes the project from the database
+
+    Args:
+        user_id (int): The user id
+        project_id (int): the project title and overview
+    
+    Returns:
+        bool: indicates whether the insertion was successful or not.
+    """
+    # TODO
+    ...
