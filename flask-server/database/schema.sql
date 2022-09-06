@@ -13,13 +13,14 @@ CREATE TABLE IF NOT EXISTS 'projects' (
     'project_id'           INTEGER PRIMARY KEY,
     'title'                TEXT NOT NULL,
     'overview'             TEXT NOT NULL,
-    'links'                JSON,
-    'creation_date'        TEXT DEFAULT CURRENT_TIMESTAMP,
+    'content'              TEXT NOT NULL,
     'user_id'              INTEGER NOT NULL REFERENCES 'users' --creates a foreign reference with primary key of users
   );
 
 -- store tasks for each project.
-CREATE TABLE IF NOT EXISTS tasks (
+-- time won't be added now to avoid over complicating the queries
+-- i plan to add it soon after i get the basic version of the app running
+CREATE TABLE IF NOT EXISTS 'tasks' (
     'task_id'         INTEGER PRIMARY KEY,
     'isdone'          INTEGER (1),
     'task'            TEXT NOT NULL,
