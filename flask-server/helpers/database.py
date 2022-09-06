@@ -70,3 +70,13 @@ def fetch_user(cur: sqlite3.Cursor, user_id: int) -> dict:
     )
     name, img = cur.fetchall()
     return {"name": name[0], "image": img[0]}
+
+
+def add_project(user_id: int, overview: str, links: dict, todos: dict) -> bool:
+    """ Adds a new project to the database
+    
+    Returns:
+        bool: indicates whether the insertion was succesful or not.
+    """
+    # TODO
+    ...
