@@ -1,10 +1,12 @@
 """
 @author: Mohamed Hassan
-The Module is used to interact with the database.
 
-it allows adding and removing and querying of the database.
+The Module is used to interact with the database.
+it allows adding to, removing from and querying of the database.
 """
+#pylint: disable=import-error
 import sqlite3
+from project import Project
 
 def get_all_projects(cur: sqlite3.Cursor, user_id: int) -> dict:
     """Fetches all projects associated the user id, returns them formated as json.
@@ -20,7 +22,7 @@ def get_all_projects(cur: sqlite3.Cursor, user_id: int) -> dict:
     cur.execute(
         """
         SELECT
-            overview, links
+            project_id, overview, links
         FROM
             projects
         WHERE
@@ -33,11 +35,14 @@ def get_all_projects(cur: sqlite3.Cursor, user_id: int) -> dict:
         user_id,
         )
     )
-    result = {"projects": []}
+
+    # Format the data into json data.
+    result: dict = {"projects": []}
     for item in cur.fetchall():
         result["projects"].append({
             "overview": item[0],
-            "links": item[1]
+            "links": item[1],
+            "id": item[2],
             })
     return result
 
@@ -69,27 +74,81 @@ def fetch_user(cur: sqlite3.Cursor, user_id: int) -> dict:
         )
     )
     name, img = cur.fetchall()
+    # Return the data formatted as json.
     return {"name": name[0], "image": img[0]}
 
+def get_all_tasks (cur: sqlite3.Cursor, user_id: int):
+    """Fetches all the todos for the current user at then "when" time.
 
-def add_project(user_id: int, overview: str, links: dict, todos: dict) -> bool:
+    Returns:
+        dict: Json Formatted, has all tasks that the user created up untill the when.
+    """
+    cur.execute(
+        """
+        SELECT (isdone, task, deadline)
+        FROM tasks
+        WHERE tasks.project_id
+            IN (SELECT projects.project_id
+                FROM projects
+                WHERE user_id = ?)
+        """,
+        (
+            user_id,
+        )
+    )
+    # TODO turn this into a json and return it.
+    print(cur.fetchall())
+    return ...
+
+
+def add_project(cur: sqlite3.Cursor, pro: Project):
     """ Adds a new project to the database
-    
+
     Returns:
         bool: indicates whether the insertion was succesful or not.
     """
-    # TODO
-    ...
-    
+    cur.execute(
+        """
+        INSERT INTO projects
+            ('title', 'overview', 'content', 'user_id')
+        VALUES
+            (?, ?, ?, ?)
+        """
+        ,
+        (
+            pro.title,
+            pro.overview,
+            pro.content,
+            pro.user_id,
+        )
+    )
+
+    project_id = cur.lastrowid
+    for todo in pro.todos:
+        cur.execute(
+            """
+            INSERT INTO tasks (isdone, task, deadline, project_id)
+            VALUES
+                (?, ?, ?)
+            """
+            ,
+            (
+                0,          # False as in not done yet.
+                todo[0],    # The Task
+                todo[1],    # The Deadline
+                project_id, # The Id of the associated project
+            )
+        )
+
 def delete_project(user_id: int, project_id: int):
     """Deletes the project from the database
 
     Args:
         user_id (int): The user id
         project_id (int): the project title and overview
-    
+
     Returns:
         bool: indicates whether the insertion was successful or not.
     """
-    # TODO
-    ...
+    # TODO the function..
+    return user_id, project_id
