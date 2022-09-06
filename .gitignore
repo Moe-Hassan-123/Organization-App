@@ -2,3 +2,6 @@ flask-server/database/db.sqlite3
 .vscode/settings.json
 flask-server/helpers/__pycache__/__init__.cpython-310.pyc
 flask-server/helpers/__pycache__/database.cpython-310.pyc
+testing/scripts/__pycache__/test_adding.cpython-310-pytest-7.1.2.pyc
+testing/scripts/__pycache__/test_deletion.cpython-310-pytest-7.1.2.pyc
+testing/scripts/__pycache__/test_get_all_projects.cpython-310-pytest-7.1.2.pyc
