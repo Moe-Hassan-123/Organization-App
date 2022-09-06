@@ -1,0 +1,4 @@
+flask-server/database/db.sqlite3
+.vscode/settings.json
+flask-server/helpers/__pycache__/__init__.cpython-310.pyc
+flask-server/helpers/__pycache__/database.cpython-310.pyc
