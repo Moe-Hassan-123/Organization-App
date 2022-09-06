@@ -1,0 +1,43 @@
+"""Functions used to faciliate unittesting
+"""
+import sqlite3
+
+def reset_data_base(cur: sqlite3.Cursor) -> bool:
+    """Executes a script to delete all data from the tables in the test database"""
+    cur.execute(
+        """
+        SELECT name FROM sqlite_master WHERE type='table'
+        """
+    )
+    tables = cur.fetchall()
+    print(tables)
+    for table in tables:
+        cur.execute(
+            f"""
+            DELETE FROM {table[0]}
+            """
+        )
+
+
+def create_schema(cur: sqlite3.Cursor):
+    """Excutes a script to initialize the database"""
+    # FIXME I should put the path in a enviroment variable instead of inside the code.
+    script = open("/home/mohamed/code/Organization Website/flask-server/database/schema.sql",
+                  encoding="UTF-8").read()
+    cur.executescript(script)
+
+
+def connect_to_db() -> sqlite3.Cursor:
+    """ Connects to a brand new resetted database and returns -
+        the cursor
+    """
+    #pylint: disable=invalid-name
+    db: sqlite3.Connection = sqlite3.connect('test.db', check_same_thread=False)
+    cur = db.cursor()
+    create_schema(cur)
+    reset_data_base(cur)
+    db.commit()
+    return cur
+
+if __name__ == "__main__":
+    connect_to_db()
