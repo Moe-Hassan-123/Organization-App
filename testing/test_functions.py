@@ -17,11 +17,10 @@ def reset_data_base(cur: sqlite3.Cursor) -> bool:
             DELETE FROM {table[0]}
             """
         )
-
-
+        
 def create_schema(cur: sqlite3.Cursor):
     """Excutes a script to initialize the database"""
-    # FIXME I should put the path in a enviroment variable instead of inside the code.
+    # HACK This won't work on any machine other than mine.
     script = open("/home/mohamed/code/Organization Website/flask-server/database/schema.sql",
                   encoding="UTF-8").read()
     cur.executescript(script)
@@ -32,8 +31,8 @@ def connect_to_db() -> sqlite3.Cursor:
         the cursor
     """
     #pylint: disable=invalid-name
-    db: sqlite3.Connection = sqlite3.connect('test.db', check_same_thread=False)
-    cur = db.cursor()
+    db: sqlite3.Connection = sqlite3.connect('test.db', check_same_thread=False, detect_types=sqlite3.PARSE_DECLTYPES)
+    cur = db.cursor() 
     create_schema(cur)
     reset_data_base(cur)
     db.commit()
