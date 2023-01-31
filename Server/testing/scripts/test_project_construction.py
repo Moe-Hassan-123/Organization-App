@@ -7,7 +7,7 @@
 #pylint: disable=wrong-import-position
 
 import sys
-sys.path.append('/home/mohamed/code/Organization Website/flask-server/helpers')
+sys.path.append('/home/mohamed/code/Organization Website/helpers')
 sys.path.append('/home/mohamed/code/Organization Website/testing/')
 import pytest
 # My Own testing faciliation libraries

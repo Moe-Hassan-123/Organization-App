@@ -1,11 +1,13 @@
+-- @author: Mohamed Hassan
+-- @email:  mdhn6832@gmail.com
+
+
+
 -- If i want to use it outside of the local setting i should implement a real user structure,
 -- current structure is password-less.
-
-
 CREATE TABLE IF NOT EXISTS 'users' (
     'user_id'     INTEGER PRIMARY KEY,
     'name'        TEXT NOT NULL,
-    'image'       BLOB
   );
 
 -- used to store projects associated with users.

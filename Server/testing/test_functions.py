@@ -1,4 +1,8 @@
-"""Functions used to faciliate unittesting
+"""
+@author: Mohamed Hassan
+@email: mdhn6832@gmail.com
+
+Helper Functions used to faciliate unit-testing
 """
 import sqlite3
 
@@ -10,7 +14,6 @@ def reset_data_base(cur: sqlite3.Cursor) -> bool:
         """
     )
     tables = cur.fetchall()
-    print(tables)
     for table in tables:
         cur.execute(
             f"""
@@ -21,7 +24,7 @@ def reset_data_base(cur: sqlite3.Cursor) -> bool:
 def create_schema(cur: sqlite3.Cursor):
     """Excutes a script to initialize the database"""
     # HACK This won't work on any machine other than mine.
-    script = open("/home/mohamed/code/Organization Website/flask-server/database/schema.sql",
+    script = open("/home/mohamed/code/Organization Website/server/database/schema.sql",
                   encoding="UTF-8").read()
     cur.executescript(script)
 

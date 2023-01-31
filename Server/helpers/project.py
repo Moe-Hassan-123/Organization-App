@@ -1,4 +1,7 @@
 """
+@author: Mohamed Hassan
+@email: mdhn6832@gmail.com
+
 A Class That allows to compress all the data about the project into a single class instance.
 """
 

@@ -1,5 +1,6 @@
 """
 @author: Mohamed Hassan
+@email: mdhn6832@gmail.com
 
 The Module is used to interact with the database.
 it allows adding to, removing from and querying of the database.
@@ -16,19 +17,16 @@ def get_all_projects(cur: sqlite3.Cursor, user_id: int) -> dict:
         user_id: The current Active User.
 
     Returns:
-        dict: formatted as json, dictionary of a list of projects,
-                each project is a 2-list containing the overview and links.
+        dict: formatted as json, dictionary of a list of projects
     """
     cur.execute(
         """
         SELECT
-            project_id, overview, links
+            project_id, title, overview, content
         FROM
             projects
         WHERE
             projects.user_id == (?)
-        ORDER BY
-            creation_date ASC
         """
         ,
         (
@@ -47,7 +45,7 @@ def get_all_projects(cur: sqlite3.Cursor, user_id: int) -> dict:
     return result
 
 
-def fetch_user(cur: sqlite3.Cursor, user_id: int) -> dict:
+def fetch_user(cur: sqlite3.Cursor, user_id: int) -> str:
     """Fetches user's data from the database
 
     Args:
@@ -55,14 +53,13 @@ def fetch_user(cur: sqlite3.Cursor, user_id: int) -> dict:
         user_id: The current Active User.
 
     Returns:
-        dict: json formatted dict that has the name of the user as "name"
-        and the image of the user (blob) as "image"
+        str: Name of the user
     """
 
     cur.execute(
         """
         SELECT
-            name, image
+            name
         FROM
             users
         WHERE
@@ -73,19 +70,26 @@ def fetch_user(cur: sqlite3.Cursor, user_id: int) -> dict:
             user_id,
         )
     )
-    name, img = cur.fetchall()
-    # Return the data formatted as json.
-    return {"name": name[0], "image": img[0]}
+    return cur.fetchall()[0]
 
-def get_all_tasks (cur: sqlite3.Cursor, user_id: int):
+def get_all_todos (cur: sqlite3.Cursor, user_id: int) -> list:
     """Fetches all the todos for the current user at then "when" time.
 
     Returns:
-        dict: Json Formatted, has all tasks that the user created up untill the when.
+        list: all tasks that the user created.
+        [0]: str: the project that the task belongs into.
+        [1]: str: the statement of the todo.
+        [2]: bool: determines if the task is done or not.
     """
+    
+    # TODO get the names of the projects and link them with
+    # their id so that i can match it in the results below
+    # and return the name of the project instead of the id.
+    
+    projects = {}
     cur.execute(
         """
-        SELECT (isdone, task, deadline)
+        SELECT (project_id, task, isdone)
         FROM tasks
         WHERE tasks.project_id
             IN (SELECT projects.project_id
@@ -96,9 +100,11 @@ def get_all_tasks (cur: sqlite3.Cursor, user_id: int):
             user_id,
         )
     )
-    # TODO turn this into a json and return it.
-    print(cur.fetchall())
-    return ...
+    todos = cur.fetchall()
+    # replace the number of the project with the project it self
+    for todo in todos:
+        todo[0] = projects[todo[0]]
+    return todos
 
 
 def add_project(cur: sqlite3.Cursor, pro: Project):
@@ -139,6 +145,7 @@ def add_project(cur: sqlite3.Cursor, pro: Project):
                 project_id, # The Id of the associated project
             )
         )
+
 
 def delete_project(cur: sqlite3.Cursor, user_id: int, project_id: int):
     """Deletes the project from the database

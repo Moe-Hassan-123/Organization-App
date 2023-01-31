@@ -6,7 +6,7 @@
 #pylint: disable=wrong-import-position
 
 import sys
-sys.path.append('/home/mohamed/code/Organization Website/flask-server/helpers')
+sys.path.append('/home/mohamed/code/Organization Website/helpers')
 sys.path.append('/home/mohamed/code/Organization Website/testing/')
 from test_functions import connect_to_db
 from database import delete_project
